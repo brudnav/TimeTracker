@@ -1,12 +1,7 @@
-import TimerControls from "../features/Timer/components/TimerControls";
+import TimerPanel from "../features/Timer/components/TimerPanel";
 
 const TimerPage = () => {
-  return (
-    <div>
-      <h1>TimerPage</h1>
-      <TimerControls />
-    </div>
-  );
+  return <TimerPanel />;
 };
 
 export default TimerPage;
