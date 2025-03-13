@@ -33,6 +33,7 @@ const TimerManual = () => {
               <input
                 name="startTime"
                 type="datetime-local"
+                step={1}
                 className="form-control m-0"
                 onChange={({ target }) => {
                   recordHandler(target.name, target.value);
@@ -43,6 +44,7 @@ const TimerManual = () => {
               <input
                 name="endTime"
                 type="datetime-local"
+                step={1}
                 className="form-control m-0"
                 onChange={({ target }) => {
                   recordHandler(target.name, target.value);

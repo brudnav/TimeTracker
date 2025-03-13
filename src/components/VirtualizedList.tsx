@@ -5,7 +5,7 @@ import { useState } from "react";
 import { TimeRecord } from "../utils/LocalStorage";
 import DeleteModal from "./DeleteModal.tsx";
 import { setMissingValue } from "../utils/TextFormat.ts";
-import { getLocalDateTime, getLocalStringFormat } from "../utils/Time.ts";
+import { getLocalStringFormat } from "../utils/Time.ts";
 
 export default function VirtualizedTable({ data, setData }) {
   const [showEditModal, setShowEditModal] = useState(false);

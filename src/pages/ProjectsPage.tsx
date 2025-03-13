@@ -1,13 +1,15 @@
 import { useState } from "react";
 import MyVirtualizedList from "../components/VirtualizedList";
-import { getLocaleStorageRecords } from "../utils/LocalStorage";
+import { useTimeRecordContext } from "../contexts/TimeRecordContext";
+import Filter from "../features/Filter/Filter";
 const ProjectsPage = () => {
-  const [records, setRecords] = useState(getLocaleStorageRecords());
-
+  const { records, setRecords } = useTimeRecordContext();
+  const [filteredRecords, setFilteredRecords] = useState(records);
   return (
     <>
       <h4>Projekty</h4>
-      <MyVirtualizedList data={records} setData={setRecords} />
+      <Filter records={records} setFilteredRecords={setFilteredRecords} />
+      <MyVirtualizedList data={filteredRecords} setData={setRecords} />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  getLocalDateTime,
+  getLocalDateTimeNow,
   getTimeDifferenceInSeconds,
 } from "../../../utils/Time";
 import {
@@ -8,6 +8,7 @@ import {
   TimeRecord,
 } from "../../../utils/LocalStorage";
 import { v4 as uuidv4 } from "uuid";
+import { useTimeRecordContext } from "../../../contexts/TimeRecordContext";
 
 export const useTimeTracking = () => {
   const [duration, setDuration] = useState<number>(0);
@@ -23,6 +24,8 @@ export const useTimeTracking = () => {
     endTime: "",
   });
 
+  const { setRecords } = useTimeRecordContext();
+
   const recordHandler = (name: string, value: string | number | object) => {
     setRecord((prev) => ({
       ...prev,
@@ -31,7 +34,7 @@ export const useTimeTracking = () => {
   };
 
   const startTime = () => {
-    const startTime = getLocalDateTime();
+    const startTime = getLocalDateTimeNow();
     recordHandler("startTime", startTime);
     setDuration(0);
     setTimerIsRunning(true);
@@ -42,7 +45,7 @@ export const useTimeTracking = () => {
   };
 
   const stopTime = () => {
-    const endTime = getLocalDateTime();
+    const endTime = getLocalDateTimeNow();
     clearInterval(intervalId!);
     setTimerIsRunning(false);
     setIntervalId(null);
@@ -53,7 +56,7 @@ export const useTimeTracking = () => {
         endTime,
         id: uuidv4(),
       };
-      setLocaleStorageRecords(updatedRecord);
+      setRecords(setLocaleStorageRecords(updatedRecord));
       return updatedRecord;
     });
     setDuration(0);
@@ -67,7 +70,7 @@ export const useTimeTracking = () => {
         duration: diff,
         id: uuidv4(),
       };
-      setLocaleStorageRecords(record);
+      setRecords(setLocaleStorageRecords(record));
       return updatedRecord;
     });
   };

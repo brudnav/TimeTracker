@@ -10,7 +10,7 @@ export const formatTime = (seconds: number): string => {
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 };
 
-export const getLocalDateTime = (): string => {
+export const getLocalDateTimeNow = (): string => {
   const now = new Date();
 
   const year = now.getFullYear();
@@ -18,8 +18,9 @@ export const getLocalDateTime = (): string => {
   const day = String(now.getDate()).padStart(2, "0");
   const hours = String(now.getHours()).padStart(2, "0"); // Lokální hodiny
   const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
 
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 };
 
 export const getTimeDifferenceInSeconds = (
@@ -39,4 +40,15 @@ export const getLocalStringFormat = (value: Date) => {
   } else {
     return value;
   }
+};
+
+export const getLocalDateTime = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Měsíce jsou 0-indexované
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0"); // Lokální hodiny
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 };

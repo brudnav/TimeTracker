@@ -7,15 +7,18 @@ import "./scss/bootstrap.scss";
 import ProjectsPage from "./pages/ProjectsPage.tsx";
 import TimerPage from "./pages/TimerPage.tsx";
 import { Navigate } from "react-router";
+import { TimeRecordProvider } from "./contexts/TimeRecordContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route index element={<Navigate to="/timer" />} />
-        <Route path="timer" element={<TimerPage />} />
-        <Route path="projects" element={<ProjectsPage />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
+  <TimeRecordProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<Navigate to="/timer" />} />
+          <Route path="timer" element={<TimerPage />} />
+          <Route path="projects" element={<ProjectsPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </TimeRecordProvider>
 );

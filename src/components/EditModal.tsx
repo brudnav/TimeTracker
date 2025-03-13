@@ -6,7 +6,7 @@ interface ModalProps {
   show: boolean;
   onClose: () => void;
   record: TimeRecord | null;
-  onSave: (updatedRecord: TimeRecord) => void;
+  setRecords: (updatedRecord: TimeRecord) => void;
 }
 
 const EditModal: React.FC<ModalProps> = ({
@@ -14,7 +14,7 @@ const EditModal: React.FC<ModalProps> = ({
   onClose,
   record,
   onSave,
-  setData,
+  setRecords,
 }) => {
   const modalRef = useRef(null);
   const modalInstance = useRef(null);
@@ -55,7 +55,7 @@ const EditModal: React.FC<ModalProps> = ({
     if (formData) {
       console.log(formData);
       const newRecords = updateLocaleStorageRecords(formData);
-      setData(newRecords);
+      setRecords(newRecords);
       onClose();
     }
   };
@@ -101,6 +101,7 @@ const EditModal: React.FC<ModalProps> = ({
                 <input
                   type="datetime-local"
                   className="form-control"
+                  step={1}
                   name="startTime"
                   value={formData?.startTime || ""}
                   onChange={handleInputChange}
@@ -112,6 +113,7 @@ const EditModal: React.FC<ModalProps> = ({
                 <input
                   type="datetime-local"
                   className="form-control"
+                  step={1}
                   name="endTime"
                   value={formData?.endTime || ""}
                   onChange={handleInputChange}

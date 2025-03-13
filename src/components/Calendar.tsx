@@ -1,0 +1,133 @@
+import React, { useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+
+import { Tooltip } from "bootstrap";
+import { EventClickArg } from "@fullcalendar/core/index.js";
+import EditModal from "./EditModal";
+import { TimeRecord } from "../utils/LocalStorage";
+import { getLocalDateTime, getLocalStringFormat } from "../utils/Time";
+import { convertTimeRecordsToCalendarEvents } from "../utils/Calendar";
+import { useTimeRecordContext } from "../contexts/TimeRecordContext";
+
+const Calendar = () => {
+  const [currentView, setCurrentView] = useState("dayGridMonth");
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<TimeRecord | null>(null);
+  const slotDurations = [
+    "00:05:00",
+    "00:10:00",
+    "00:15:00",
+    "00:30:00",
+    "01:00:00",
+  ];
+  const [slotIndex, setSlotIndex] = useState(2);
+
+  const { records, setRecords } = useTimeRecordContext();
+
+  const events = convertTimeRecordsToCalendarEvents(records);
+
+  const handleEditClick = (info: EventClickArg) => {
+    console.log(info);
+
+    const timeRecordObject: TimeRecord = {
+      id: info.event._def.publicId,
+      description: info.event._def.title,
+      duration: info.event._def.extendedProps.duration,
+      startTime: getLocalDateTime(info.event.start),
+      endTime: getLocalDateTime(info.event.end),
+      project: info.event._def.extendedProps.project,
+    };
+
+    setSelectedRecord(timeRecordObject);
+    setShowEditModal(true);
+  };
+
+  return (
+    <>
+      <div style={{ textAlign: "center" }}>
+        {/* 🛠 Vlastní hlavička */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "10px",
+            background: "#f5f5f5",
+          }}
+        >
+          <h2>📆 Můj FullCalendar</h2>
+          <input
+            type="range"
+            min="0"
+            max={slotDurations.length - 1}
+            step="1"
+            value={slotIndex}
+            onChange={(e) => setSlotIndex(Number(e.target.value))}
+          />
+          <div>
+            <button onClick={() => setCurrentView("dayGridMonth")}>
+              📅 Měsíc
+            </button>
+            <button onClick={() => setCurrentView("timeGridWeek")}>
+              🗓️ Týden
+            </button>
+            <button onClick={() => setCurrentView("timeGridDay")}>
+              📆 Den
+            </button>
+          </div>
+        </div>
+
+        {/* 🛠 FullCalendar s klíčem pro re-render */}
+        <FullCalendar
+          key={currentView} // Klíč zajistí re-render při změně pohledu
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView={currentView}
+          editable={true}
+          events={events}
+          selectable={true}
+          slotDuration={slotDurations[slotIndex]}
+          slotLabelFormat={{
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          }}
+          eventContent={(info) => {
+            return (
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+              >
+                <span style={{ color: "red", fontSize: "12px" }}>🔴</span>
+                <b>{info.timeText}</b> - {info.event.title}
+              </div>
+            );
+          }}
+          eventClick={handleEditClick}
+          eventDidMount={(info) => {
+            new Tooltip(info.el, {
+              title: `${getLocalStringFormat(
+                info.event.start
+              )} - ${getLocalStringFormat(info.event.end)}`,
+              placement: "top",
+              trigger: "hover",
+              container: "body",
+            });
+          }}
+          headerToolbar={false} // Vypínáme defaultní toolbar
+        />
+      </div>
+      <EditModal
+        record={selectedRecord}
+        show={showEditModal}
+        setRecords={setRecords}
+        onClose={() => {
+          setShowEditModal(false);
+        }}
+      />
+    </>
+  );
+};
+
+export default Calendar;

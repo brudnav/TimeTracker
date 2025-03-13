@@ -18,11 +18,13 @@ export const getLocaleStorageRecords = (): TimeRecord[] | [] => {
   return records;
 };
 
-export const setLocaleStorageRecords = (record: TimeRecord) => {
+export const setLocaleStorageRecords = (record: TimeRecord): TimeRecord[] => {
   const records = getLocaleStorageRecords();
   const newRecords = [...records, record];
   const recordStringify = JSON.stringify(newRecords);
   localStorage.setItem(StorageKeys.Record, recordStringify);
+
+  return newRecords;
 };
 
 export const updateLocaleStorageRecords = (
