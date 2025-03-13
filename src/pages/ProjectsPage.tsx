@@ -1,14 +1,17 @@
 import { useState } from "react";
 import MyVirtualizedList from "../components/VirtualizedList";
 import { useTimeRecordContext } from "../contexts/TimeRecordContext";
-import Filter from "../features/Filter/Filter";
+import TimeRecordsFilter from "../features/Filter/TimeRecordsFilter/TimeRecordsFilter";
 const ProjectsPage = () => {
   const { records, setRecords } = useTimeRecordContext();
   const [filteredRecords, setFilteredRecords] = useState(records);
   return (
     <>
       <h4>Projekty</h4>
-      <Filter records={records} setFilteredRecords={setFilteredRecords} />
+      <TimeRecordsFilter
+        records={records}
+        setFilteredRecords={setFilteredRecords}
+      />
       <MyVirtualizedList data={filteredRecords} setData={setRecords} />
     </>
   );

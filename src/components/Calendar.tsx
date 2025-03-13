@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 
 import { Tooltip } from "bootstrap";
 import { EventClickArg } from "@fullcalendar/core/index.js";
-import EditModal from "./EditModal";
+import EditTimeRecordModal from "../features/Modals/EditTimeRecordModal/EditTimeRecordModal";
 import { TimeRecord } from "../utils/LocalStorage";
 import { getLocalDateTime, getLocalStringFormat } from "../utils/Time";
 import { convertTimeRecordsToCalendarEvents } from "../utils/Calendar";
@@ -48,7 +48,6 @@ const Calendar = () => {
   return (
     <>
       <div style={{ textAlign: "center" }}>
-        {/* 🛠 Vlastní hlavička */}
         <div
           style={{
             display: "flex",
@@ -57,7 +56,6 @@ const Calendar = () => {
             background: "#f5f5f5",
           }}
         >
-          <h2>📆 Můj FullCalendar</h2>
           <input
             type="range"
             min="0"
@@ -68,20 +66,19 @@ const Calendar = () => {
           />
           <div>
             <button onClick={() => setCurrentView("dayGridMonth")}>
-              📅 Měsíc
+              📅 Months
             </button>
             <button onClick={() => setCurrentView("timeGridWeek")}>
-              🗓️ Týden
+              🗓️ Weeks
             </button>
             <button onClick={() => setCurrentView("timeGridDay")}>
-              📆 Den
+              📆 Days
             </button>
           </div>
         </div>
 
-        {/* 🛠 FullCalendar s klíčem pro re-render */}
         <FullCalendar
-          key={currentView} // Klíč zajistí re-render při změně pohledu
+          key={currentView}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={currentView}
           editable={true}
@@ -115,13 +112,13 @@ const Calendar = () => {
               container: "body",
             });
           }}
-          headerToolbar={false} // Vypínáme defaultní toolbar
+          headerToolbar={false}
         />
       </div>
-      <EditModal
-        record={selectedRecord}
+      <EditTimeRecordModal
+        data={selectedRecord}
         show={showEditModal}
-        setRecords={setRecords}
+        setData={setRecords}
         onClose={() => {
           setShowEditModal(false);
         }}

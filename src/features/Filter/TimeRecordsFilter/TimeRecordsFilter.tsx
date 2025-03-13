@@ -1,40 +1,17 @@
-import { useEffect, useState } from "react";
-import { TimeRecord } from "../../utils/LocalStorage";
+import { useEffect } from "react";
+import { TimeRecord } from "../../../utils/LocalStorage";
+import useTimeRecordsFilter from "./useTimeRecordsFilter";
 
 interface FilterProps {
   records: TimeRecord[];
   setFilteredRecords: (newFilteredRecordsr: TimeRecord[] | []) => void;
 }
 
-interface FilterTimeRecords {
-  description: string;
-  project: string;
-  startTime: string;
-  endTime: string;
-}
-
-const rulesFilter = (record: TimeRecord, filter: TimeRecord) => {
-  const description = record.description.includes(filter.description || "");
-  const project = record.project.includes(filter.project || "");
-
-  const startTime = filter.startTime
-    ? +new Date(filter.startTime) < +new Date(record.startTime)
-    : true;
-
-  const endTime = filter.endTime
-    ? +new Date(filter.endTime) > +new Date(record.endTime)
-    : true;
-
-  return description && project && startTime && endTime;
-};
-
-const Filter: React.FC<FilterProps> = ({ records, setFilteredRecords }) => {
-  const [filter, setFilter] = useState<FilterTimeRecords>({
-    description: "",
-    project: "",
-    startTime: "",
-    endTime: "",
-  });
+const TimeRecordsFilter: React.FC<FilterProps> = ({
+  records,
+  setFilteredRecords,
+}) => {
+  const { rulesFilter, filter, setFilter } = useTimeRecordsFilter();
 
   const filterRecords = (filter: TimeRecord) => {
     const newFilteredRecords = records.filter((record) =>
@@ -62,8 +39,6 @@ const Filter: React.FC<FilterProps> = ({ records, setFilteredRecords }) => {
       [name]: value,
     }));
   };
-
-  console.log(filter);
 
   return (
     <div className="card container border-0 shadow-lg">
@@ -124,4 +99,4 @@ const Filter: React.FC<FilterProps> = ({ records, setFilteredRecords }) => {
   );
 };
 
-export default Filter;
+export default TimeRecordsFilter;

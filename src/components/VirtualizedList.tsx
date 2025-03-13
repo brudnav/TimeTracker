@@ -1,17 +1,15 @@
 import { FixedSizeList as List } from "react-window";
-import "./VirtualizedList.scss"; // Naše vlastní styly
-import EditModal from "./EditModal.tsx";
+import "./VirtualizedList.scss";
+import EditTimeRecordModal from "../features/Modals/EditTimeRecordModal/EditTimeRecordModal.tsx";
 import { useState } from "react";
 import { TimeRecord } from "../utils/LocalStorage";
-import DeleteModal from "./DeleteModal.tsx";
+import DeleteTimeRecordModal from "./DeleteModal.tsx";
 import { setMissingValue } from "../utils/TextFormat.ts";
 import { getLocalStringFormat } from "../utils/Time.ts";
 
 export default function VirtualizedTable({ data, setData }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  console.log("data", data);
 
   const [selectedRecord, setSelectedRecord] = useState<TimeRecord | null>(null);
 
@@ -25,7 +23,12 @@ export default function VirtualizedTable({ data, setData }) {
     setShowDeleteModal(true);
   };
 
-  const Row = ({ index, style }) => {
+  type Row = {
+    index: number;
+    style: React.CSSProperties;
+  };
+
+  const Row = ({ index, style }: Row) => {
     const record = data[index];
     return (
       <div style={style} className="tr">
@@ -46,14 +49,14 @@ export default function VirtualizedTable({ data, setData }) {
               handleEditClick(record);
             }}
           >
-            ⚡
+            ✍️
           </button>
           <button
             onClick={() => {
               handleDeleteClick(record);
             }}
           >
-            ❤️
+            ❌
           </button>
         </div>
       </div>
@@ -73,23 +76,18 @@ export default function VirtualizedTable({ data, setData }) {
             <div className="th col-actions"></div>
           </div>
         </div>
-        <List
-          height={400} // Výška tabulky
-          itemCount={data.length} // Počet řádků
-          itemSize={50} // Výška každého řádku
-          width={1000} // Pevná šířka pro scrollování
-        >
+        <List height={400} itemCount={data.length} itemSize={50} width={1000}>
           {Row}
         </List>
       </div>
-      <EditModal
-        record={selectedRecord}
+      <EditTimeRecordModal
+        data={selectedRecord}
         setData={setData}
         show={showEditModal}
         onClose={() => setShowEditModal(false)}
       />
-      <DeleteModal
-        record={selectedRecord}
+      <DeleteTimeRecordModal
+        data={selectedRecord}
         show={showDeleteModal}
         setData={setData}
         onClose={() => setShowDeleteModal(false)}

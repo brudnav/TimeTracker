@@ -1,10 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Modal as BootstrapModal } from "bootstrap";
-import { deleteLocaleStorageRecord } from "../utils/LocalStorage";
+import { deleteLocaleStorageRecord, TimeRecord } from "../utils/LocalStorage";
+import { ModalProps } from "../types/Modal/modal";
+import useEditTimeRecord from "../features/Modals/EditTimeRecordModal/useEditTimeRecord";
 
-const DeleteModal = ({ show, record, onClose, setData }) => {
-  const modalRef = useRef(null);
-  const modalInstance = useRef(null);
+const DeleteTimeRecordModal: React.FC<ModalProps<TimeRecord>> = ({
+  show,
+  data: record,
+  onClose,
+  setData,
+}) => {
+  const { modalInstance, modalRef } = useEditTimeRecord();
 
   useEffect(() => {
     if (modalRef.current) {
@@ -21,7 +27,11 @@ const DeleteModal = ({ show, record, onClose, setData }) => {
 
   useEffect(() => {
     if (modalInstance.current) {
-      show ? modalInstance.current.show() : modalInstance.current.hide();
+      if (show) {
+        modalInstance.current.show();
+      } else {
+        modalInstance.current.hide();
+      }
     }
   }, [show]);
 
@@ -35,7 +45,7 @@ const DeleteModal = ({ show, record, onClose, setData }) => {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Edit Record</h5>
+            <h5 className="modal-title">Delete Record</h5>
             <button
               type="button"
               className="btn-close"
@@ -65,4 +75,4 @@ const DeleteModal = ({ show, record, onClose, setData }) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteTimeRecordModal;
