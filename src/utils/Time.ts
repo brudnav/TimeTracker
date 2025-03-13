@@ -31,3 +31,12 @@ export const getTimeDifferenceInSeconds = (
 
   return Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
 };
+
+export const getLocalStringFormat = (value: Date) => {
+  if (new Date(value)) {
+    const date = new Date(value);
+    return date.toLocaleString();
+  } else {
+    return value;
+  }
+};

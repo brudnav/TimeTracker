@@ -15,7 +15,7 @@ export const useTimeTracking = () => {
   const [intervalId, setIntervalId] = useState<number | null>(null);
   const [manualMode, setManualMode] = useState<boolean>(false);
   const [record, setRecord] = useState<TimeRecord>({
-    id: uuidv4(),
+    id: "",
     description: "",
     project: "",
     duration: 0,
@@ -51,6 +51,7 @@ export const useTimeTracking = () => {
         ...prevRecord,
         duration,
         endTime,
+        id: uuidv4(),
       };
       setLocaleStorageRecords(updatedRecord);
       return updatedRecord;
@@ -64,6 +65,7 @@ export const useTimeTracking = () => {
       const updatedRecord = {
         ...prevRecord,
         duration: diff,
+        id: uuidv4(),
       };
       setLocaleStorageRecords(record);
       return updatedRecord;
