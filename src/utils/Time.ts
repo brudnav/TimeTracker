@@ -52,3 +52,10 @@ export const getLocalDateTime = (date) => {
 
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 };
+
+//02:00:00 -> 7200
+
+export const timeToSeconds = (timeString: string) => {
+  const [hours, minutes, seconds] = timeString.split(":").map(Number);
+  return hours * 3600 + minutes * 60 + seconds;
+};

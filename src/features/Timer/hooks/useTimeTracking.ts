@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   getLocalDateTimeNow,
   getTimeDifferenceInSeconds,
+  timeToSeconds,
 } from "../../../utils/Time";
 import {
   setLocaleStorageRecords,
@@ -9,6 +10,7 @@ import {
 } from "../../../utils/LocalStorage";
 import { v4 as uuidv4 } from "uuid";
 import { useTimeRecordContext } from "../../../contexts/TimeRecordContext";
+import { toast } from "react-toastify";
 
 export const useTimeTracking = () => {
   const [duration, setDuration] = useState<number>(0);
@@ -23,6 +25,17 @@ export const useTimeTracking = () => {
     startTime: "",
     endTime: "",
   });
+  const [alarm, setAlarm] = useState({
+    isAlarmSet: false,
+    alarmTime: "",
+  });
+
+  const notify = () => {
+    toast.warn(`Již si překročil nastavenný čas: ${alarm.alarmTime}`, {
+      position: "top-center",
+      closeOnClick: true,
+    });
+  };
 
   const { setRecords } = useTimeRecordContext();
 
@@ -39,7 +52,15 @@ export const useTimeTracking = () => {
     setDuration(0);
     setTimerIsRunning(true);
     const id = setInterval(() => {
-      setDuration((prevTime) => ++prevTime);
+      setDuration((prevTime) => {
+        if (alarm.isAlarmSet) {
+          console.log("limit", timeToSeconds(alarm.alarmTime));
+          if (prevTime === timeToSeconds(alarm.alarmTime)) {
+            notify();
+          }
+        }
+        return ++prevTime;
+      });
     }, 1000);
     setIntervalId(id);
   };
@@ -99,5 +120,7 @@ export const useTimeTracking = () => {
     stopTime,
     startTime,
     setManualMode,
+    alarm,
+    setAlarm,
   };
 };

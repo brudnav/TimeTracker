@@ -18,6 +18,10 @@ export interface ProjectData {
   color: string;
 }
 
+export interface AlarmData {
+  alarmTime: string;
+}
+
 //TimeRecords
 
 export const getLocaleStorageRecords = (): TimeRecord[] | [] => {

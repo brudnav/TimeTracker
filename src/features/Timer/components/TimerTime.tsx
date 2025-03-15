@@ -1,10 +1,21 @@
+import { useState } from "react";
 import { useGetProjects } from "../../../api/queries/projectQuery";
 import { formatTime } from "../../../utils/Time";
 import { useTimeTracking } from "../hooks/useTimeTracking";
+import CreateAlarmModal from "../../Modals/CreateAlarmModal/CreateAlarmModal";
 
 const TimerTime = () => {
-  const { recordHandler, duration, timerIsRunning, stopTime, startTime } =
-    useTimeTracking();
+  const {
+    recordHandler,
+    duration,
+    timerIsRunning,
+    stopTime,
+    startTime,
+    alarm,
+    setAlarm,
+  } = useTimeTracking();
+
+  const [showCreateAlarmModal, setShowCreateAlarmModal] = useState(false);
 
   const { data: projects } = useGetProjects();
 
@@ -36,7 +47,12 @@ const TimerTime = () => {
               </option>
             ))}
           </select>
-          <p className="m-0">{formatTime(duration)}</p>
+          <div className="vstack align-items-center">
+            <p className="m-0">{formatTime(duration)}</p>
+            {alarm.isAlarmSet && (
+              <p className="m-0 text-warning fw-bold">{alarm.alarmTime}</p>
+            )}
+          </div>
           {timerIsRunning ? (
             <button
               className="btn btn-success"
@@ -51,8 +67,29 @@ const TimerTime = () => {
               Start
             </button>
           )}
+          <span
+            onClick={() => {
+              if (!timerIsRunning) {
+                setShowCreateAlarmModal(true);
+              }
+            }}
+            style={{
+              fontSize: "20px",
+              cursor: "pointer",
+              ...(!alarm.isAlarmSet && { filter: "grayscale(100%)" }),
+            }}
+          >
+            🔔
+          </span>
         </div>
       </div>
+      <CreateAlarmModal
+        show={showCreateAlarmModal}
+        onClose={() => {
+          setShowCreateAlarmModal(false);
+        }}
+        setData={setAlarm}
+      />
     </div>
   );
 };
