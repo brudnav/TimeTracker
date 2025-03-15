@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { Modal as BootstrapModal } from "bootstrap";
 import {
-  TimeRecord,
-  updateLocaleStorageRecords,
+  ProjectData,
+  updateLocaleStorageProjects,
 } from "../../../utils/LocalStorage";
-import EditTimeRecordForm from "./EditTimeRecordForm";
-import useEditTimeRecord from "./useEditTimeRecord";
+import EditTimeRecordForm from "./EditProjectForm";
+import useEditTimeRecord from "./useEditProject";
 import { ModalProps } from "../../../types/Modal/modal";
 
-const EditTimeRecordModal: React.FC<ModalProps<TimeRecord>> = ({
+const EditProjectModal: React.FC<ModalProps<ProjectData>> = ({
   show,
   onClose,
-  data: record,
-  setData: setRecords,
+  data,
+  setData,
 }) => {
   const { formData, formRef, modalInstance, modalRef, setFormData } =
     useEditTimeRecord();
@@ -39,45 +39,23 @@ const EditTimeRecordModal: React.FC<ModalProps<TimeRecord>> = ({
       }
     }
 
-    if (show && record) {
-      setFormData(record);
+    if (show && data) {
+      setFormData(data);
     }
-  }, [show, record]);
+  }, [show, data]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => {
-      if (!prev) return null;
-
-      // Funkce pro rekurzivní nastavení hodnoty v objektu podle cesty (path)
-      const setDeepValue = (obj: any, path: string[], value: any): any => {
-        if (path.length === 1) {
-          return { ...obj, [path[0]]: value };
-        }
-
-        const [key, ...rest] = path;
-        return {
-          ...obj,
-          [key]: setDeepValue(obj[key] || {}, rest, value), // Rekurzivně nastavíme hodnotu v objektu
-        };
-      };
-
-      // Rozdělení `name` podle teček → získáme pole ["project", "title"]
-      const path = name.split(".");
-
-      return setDeepValue(prev, path, value);
-    });
+    setFormData((prev) =>
+      prev ? { ...prev, [e.target.name]: e.target.value } : null
+    );
   };
-
-  console.log(formData);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData) {
       console.log(formData);
-      const newRecords = updateLocaleStorageRecords(formData);
-      setRecords(newRecords);
+      const newRecords = updateLocaleStorageProjects(formData);
+      setData(newRecords);
       onClose();
     }
   };
@@ -119,4 +97,4 @@ const EditTimeRecordModal: React.FC<ModalProps<TimeRecord>> = ({
   );
 };
 
-export default EditTimeRecordModal;
+export default EditProjectModal;

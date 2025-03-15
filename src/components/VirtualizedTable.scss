@@ -49,6 +49,14 @@
   width: 200px;
   min-width: 200px;
 }
+
+span.tag {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
 .col-time {
   width: 150px;
   min-width: 150px;

@@ -8,17 +8,22 @@ import ProjectsPage from "./pages/ProjectsPage.tsx";
 import TimerPage from "./pages/TimerPage.tsx";
 import { Navigate } from "react-router";
 import { TimeRecordProvider } from "./contexts/TimeRecordContext.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
-  <TimeRecordProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<Navigate to="/timer" />} />
-          <Route path="timer" element={<TimerPage />} />
-          <Route path="projects" element={<ProjectsPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </TimeRecordProvider>
+  <QueryClientProvider client={queryClient}>
+    <TimeRecordProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Navigate to="/timer" />} />
+            <Route path="timer" element={<TimerPage />} />
+            <Route path="projects" element={<ProjectsPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </TimeRecordProvider>
+  </QueryClientProvider>
 );

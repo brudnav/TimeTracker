@@ -1,8 +1,9 @@
 import React from "react";
+import { ProjectData } from "../../../utils/LocalStorage";
 
 export type EditTimeRecordFormData = {
   description: string;
-  project: string;
+  project: ProjectData;
   startTime: string;
   endTime: string;
 };
@@ -30,7 +31,6 @@ const EditTimeRecordForm: React.FC<EditTimeRecordFormProps> = ({
           name="description"
           value={formData?.description || ""}
           onChange={handleInputChange}
-          required
         />
       </div>
       <div className="mb-3">
@@ -38,10 +38,19 @@ const EditTimeRecordForm: React.FC<EditTimeRecordFormProps> = ({
         <input
           type="text"
           className="form-control"
-          name="project"
-          value={formData?.project || ""}
+          name="project.title"
+          value={formData?.project.title || ""}
           onChange={handleInputChange}
-          required
+        />
+      </div>
+      <div className="mb-3">
+        <label className="form-label">Project Color</label>
+        <input
+          type="color"
+          className="form-control form-control-color"
+          name="project.color"
+          value={formData?.project.color || ""}
+          onChange={handleInputChange}
         />
       </div>
       <div className="mb-3">
@@ -53,7 +62,6 @@ const EditTimeRecordForm: React.FC<EditTimeRecordFormProps> = ({
           name="startTime"
           value={formData?.startTime || ""}
           onChange={handleInputChange}
-          required
         />
       </div>
       <div className="mb-3">
@@ -65,7 +73,6 @@ const EditTimeRecordForm: React.FC<EditTimeRecordFormProps> = ({
           name="endTime"
           value={formData?.endTime || ""}
           onChange={handleInputChange}
-          required
         />
       </div>
     </form>

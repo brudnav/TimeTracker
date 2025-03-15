@@ -1,7 +1,9 @@
+import { useGetProjects } from "../../../api/queries/projectQuery";
 import { useTimeTracking } from "../hooks/useTimeTracking";
 
 const TimerManual = () => {
   const { recordHandler, addTimeEntry } = useTimeTracking();
+  const { data: projects } = useGetProjects();
   return (
     <div className="card container border-0 shadow-lg">
       <div className="card-body hstack justify-content-between">
@@ -24,9 +26,11 @@ const TimerManual = () => {
             }}
           >
             <option defaultValue="">Choose Project</option>
-            <option value="Project1">Project1</option>
-            <option value="Project2">Project2</option>
-            <option value="Project3">Project3</option>
+            {projects?.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.title}
+              </option>
+            ))}
           </select>
           <div className="vstack justify-content-center gap-3">
             <div>
@@ -52,7 +56,12 @@ const TimerManual = () => {
               />
             </div>
           </div>
-          <button className="btn btn-success" onClick={addTimeEntry}>
+          <button
+            className="btn btn-success"
+            onClick={() => {
+              addTimeEntry(projects);
+            }}
+          >
             Add Time Entry
           </button>
         </div>

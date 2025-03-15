@@ -47,7 +47,7 @@ const Calendar = () => {
 
   return (
     <>
-      <div style={{ textAlign: "center" }}>
+      <div className="text-center">
         <div
           style={{
             display: "flex",
@@ -79,6 +79,7 @@ const Calendar = () => {
 
         <FullCalendar
           key={currentView}
+          eventDisplay="block"
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={currentView}
           editable={true}
@@ -92,12 +93,13 @@ const Calendar = () => {
             hour12: false,
           }}
           eventContent={(info) => {
+            console.log(info);
+            const infoTitle = `${
+              info.event._def.extendedProps.project.title || "Nezařazený"
+            } - ${info.event.title || "Bez popisu"}`;
             return (
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "5px" }}
-              >
-                <span style={{ color: "red", fontSize: "12px" }}>🔴</span>
-                <b>{info.timeText}</b> - {info.event.title}
+              <div title={infoTitle} className="align-items-center px-2">
+                <span>{infoTitle}</span>
               </div>
             );
           }}

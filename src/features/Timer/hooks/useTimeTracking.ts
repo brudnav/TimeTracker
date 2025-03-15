@@ -44,33 +44,48 @@ export const useTimeTracking = () => {
     setIntervalId(id);
   };
 
-  const stopTime = () => {
+  const findProject = (projects, id) => {
+    const findedProject = projects.find(
+      (project) => project.id.toString() === id
+    );
+
+    return findedProject ? findedProject : { id: 0, title: "", color: "" };
+  };
+
+  const stopTime = (projects) => {
     const endTime = getLocalDateTimeNow();
     clearInterval(intervalId!);
     setTimerIsRunning(false);
     setIntervalId(null);
     setRecord((prevRecord) => {
+      const project = findProject(projects, prevRecord.project);
+
       const updatedRecord = {
         ...prevRecord,
         duration,
         endTime,
         id: uuidv4(),
+        project,
       };
+      console.log(updatedRecord);
       setRecords(setLocaleStorageRecords(updatedRecord));
       return updatedRecord;
     });
     setDuration(0);
   };
 
-  const addTimeEntry = () => {
+  const addTimeEntry = (projects) => {
     const diff = getTimeDifferenceInSeconds(record.startTime, record.endTime);
     setRecord((prevRecord) => {
+      const project = findProject(projects, prevRecord.project);
+
       const updatedRecord = {
         ...prevRecord,
         duration: diff,
         id: uuidv4(),
+        project,
       };
-      setRecords(setLocaleStorageRecords(record));
+      setRecords(setLocaleStorageRecords(updatedRecord));
       return updatedRecord;
     });
   };

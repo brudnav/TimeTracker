@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MyVirtualizedList from "../components/VirtualizedList";
+import MyVirtualizedList from "../components/VirtualizedTable";
 import { useTimeRecordContext } from "../contexts/TimeRecordContext";
 import TimeRecordsFilter from "../features/Filter/TimeRecordsFilter/TimeRecordsFilter";
 const ProjectsPage = () => {

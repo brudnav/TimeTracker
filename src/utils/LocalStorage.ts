@@ -1,15 +1,24 @@
 enum StorageKeys {
   Record = "RECORD",
+  ProjectData = "PROJECT_DATA",
 }
 
 export interface TimeRecord {
   id: string;
-  project: string;
+  project: ProjectData;
   description: string;
   duration: number;
   startTime: string;
   endTime: string;
 }
+
+export interface ProjectData {
+  id: string;
+  title: string;
+  color: string;
+}
+
+//TimeRecords
 
 export const getLocaleStorageRecords = (): TimeRecord[] | [] => {
   const records = localStorage.getItem(StorageKeys.Record)
@@ -56,4 +65,57 @@ export const deleteLocaleStorageRecord = (
   localStorage.setItem(StorageKeys.Record, recordStringify);
 
   return updatedRecords;
+};
+
+//Projects
+
+export const getLocaleStorageProjects = (): ProjectData[] | [] => {
+  const projects = localStorage.getItem(StorageKeys.ProjectData)
+    ? JSON.parse(localStorage.getItem(StorageKeys.ProjectData)!)
+    : [];
+  return projects;
+};
+
+export const setLocaleStorageProjects = (
+  project: ProjectData
+): ProjectData[] => {
+  const projects = getLocaleStorageProjects();
+  const newProjects = [...projects, project];
+  const projectStringify = JSON.stringify(newProjects);
+  localStorage.setItem(StorageKeys.ProjectData, projectStringify);
+
+  return newProjects;
+};
+
+export const updateLocaleStorageProjects = (
+  newProject: ProjectData
+): ProjectData[] => {
+  const projects = getLocaleStorageProjects();
+
+  const updatedProjects = projects.map((project) => {
+    if (project.id === newProject.id) {
+      return { ...project, ...newProject };
+    }
+    return project;
+  });
+
+  const recordStringify = JSON.stringify(updatedProjects);
+  localStorage.setItem(StorageKeys.ProjectData, recordStringify);
+
+  return updatedProjects;
+};
+
+export const deleteLocaleStorageProject = (
+  newProject: ProjectData
+): ProjectData[] => {
+  const projects = getLocaleStorageProjects();
+
+  const updatedProjects = projects.filter(
+    (project) => project.id !== newProject.id
+  );
+
+  const projectStringify = JSON.stringify(updatedProjects);
+  localStorage.setItem(StorageKeys.ProjectData, projectStringify);
+
+  return updatedProjects;
 };

@@ -1,0 +1,8 @@
+{
+  "projects": [
+    { "id": 1, "title": "Webová aplikace", "color": "#FF5733" },
+    { "id": 2, "title": "Mobilní aplikace", "color": "#33FF57" },
+    { "id": 3, "title": "E-shop", "color": "#3357FF" },
+    { "id": 4, "title": "Interní systém", "color": "#FF33A8" }
+  ]
+}

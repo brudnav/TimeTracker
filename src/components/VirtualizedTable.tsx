@@ -1,13 +1,21 @@
 import { FixedSizeList as List } from "react-window";
-import "./VirtualizedList.scss";
+import "./VirtualizedTable.scss";
 import EditTimeRecordModal from "../features/Modals/EditTimeRecordModal/EditTimeRecordModal.tsx";
 import { useState } from "react";
-import { TimeRecord } from "../utils/LocalStorage";
+import { TimeRecord } from "../utils/LocalStorage.ts";
 import DeleteTimeRecordModal from "./DeleteModal.tsx";
 import { setMissingValue } from "../utils/TextFormat.ts";
 import { getLocalStringFormat } from "../utils/Time.ts";
 
-export default function VirtualizedTable({ data, setData }) {
+interface VirtualizedTableProps {
+  data: TimeRecord[];
+  setData: (record: TimeRecord) => void;
+}
+
+const VirtualizedTable: React.FC<VirtualizedTableProps> = ({
+  data,
+  setData,
+}) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -36,7 +44,15 @@ export default function VirtualizedTable({ data, setData }) {
         <div className="td col-description">
           {setMissingValue(record.description)}
         </div>
-        <div className="td col-project">{setMissingValue(record.project)}</div>
+        <div className="td col-project gap-2">
+          {record.project.color && (
+            <span
+              className="tag"
+              style={{ backgroundColor: record.project.color }}
+            ></span>
+          )}
+          <p>{setMissingValue(record.project.title)}</p>
+        </div>
         <div className="td col-time">
           {setMissingValue(getLocalStringFormat(record.startTime))}
         </div>
@@ -94,4 +110,6 @@ export default function VirtualizedTable({ data, setData }) {
       />
     </div>
   );
-}
+};
+
+export default VirtualizedTable;
