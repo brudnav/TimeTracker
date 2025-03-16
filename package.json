@@ -28,6 +28,7 @@
     "react-table": "^7.8.0",
     "react-toastify": "^11.0.5",
     "react-window": "^1.8.11",
+    "recharts": "^2.15.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

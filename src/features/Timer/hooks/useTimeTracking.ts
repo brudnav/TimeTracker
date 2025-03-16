@@ -20,7 +20,11 @@ export const useTimeTracking = () => {
   const [record, setRecord] = useState<TimeRecord>({
     id: "",
     description: "",
-    project: "",
+    project: {
+      id: "",
+      color: "",
+      title: "",
+    },
     duration: 0,
     startTime: "",
     endTime: "",
@@ -54,7 +58,6 @@ export const useTimeTracking = () => {
     const id = setInterval(() => {
       setDuration((prevTime) => {
         if (alarm.isAlarmSet) {
-          console.log("limit", timeToSeconds(alarm.alarmTime));
           if (prevTime === timeToSeconds(alarm.alarmTime)) {
             notify();
           }
@@ -88,11 +91,22 @@ export const useTimeTracking = () => {
         id: uuidv4(),
         project,
       };
-      console.log(updatedRecord);
       setRecords(setLocaleStorageRecords(updatedRecord));
       return updatedRecord;
     });
     setDuration(0);
+    setRecord({
+      id: "",
+      description: "",
+      project: {
+        id: "",
+        color: "",
+        title: "",
+      },
+      duration: 0,
+      startTime: "",
+      endTime: "",
+    });
   };
 
   const addTimeEntry = (projects) => {
@@ -109,6 +123,18 @@ export const useTimeTracking = () => {
       setRecords(setLocaleStorageRecords(updatedRecord));
       return updatedRecord;
     });
+    setRecord({
+      id: "",
+      description: "",
+      project: {
+        id: "",
+        color: "",
+        title: "",
+      },
+      duration: 0,
+      startTime: "",
+      endTime: "",
+    });
   };
 
   return {
@@ -122,5 +148,6 @@ export const useTimeTracking = () => {
     setManualMode,
     alarm,
     setAlarm,
+    record,
   };
 };

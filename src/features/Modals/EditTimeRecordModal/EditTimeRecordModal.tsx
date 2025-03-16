@@ -70,12 +70,9 @@ const EditTimeRecordModal: React.FC<ModalProps<TimeRecord>> = ({
     });
   };
 
-  console.log(formData);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData) {
-      console.log(formData);
       const newRecords = updateLocaleStorageRecords(formData);
       setRecords(newRecords);
       onClose();

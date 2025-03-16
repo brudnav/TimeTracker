@@ -4,7 +4,6 @@ import { TimeRecord } from "./LocalStorage";
 export const convertTimeRecordsToCalendarEvents = (
   records: TimeRecord[]
 ): EventSourceInput[] => {
-  console.log("records", records);
   const eventSourceInputs = records.map((record) => ({
     id: record.id,
     title: record.description,
@@ -24,6 +23,5 @@ export const convertTimeRecordsToCalendarEvents = (
       },
     },
   }));
-  console.log("Calendar Events", eventSourceInputs);
   return eventSourceInputs;
 };

@@ -27,7 +27,6 @@ export const TimeRecordProvider: React.FC<TimeRecordProviderProps> = ({
 
   useEffect(() => {
     const syncRecords = () => {
-      console.log("sync");
       setRecords(getLocaleStorageRecords());
     };
 

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../apiClient";
+import { ProjectData } from "../../utils/LocalStorage";
 
 const CACHE_PROJECT = "CACHE_PROJECT";
 
@@ -9,7 +10,10 @@ const getProjects = async () => {
 };
 
 export const useGetProjects = () => {
-  return useQuery({ queryKey: [CACHE_PROJECT], queryFn: getProjects });
+  return useQuery<ProjectData[]>({
+    queryKey: [CACHE_PROJECT],
+    queryFn: getProjects,
+  });
 };
 
 const addProjects = async (project) => {

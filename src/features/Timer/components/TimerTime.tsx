@@ -13,6 +13,7 @@ const TimerTime = () => {
     startTime,
     alarm,
     setAlarm,
+    record,
   } = useTimeTracking();
 
   const [showCreateAlarmModal, setShowCreateAlarmModal] = useState(false);
@@ -26,6 +27,7 @@ const TimerTime = () => {
           style={{ width: "300px" }}
           type="text"
           name="description"
+          value={record.description}
           placeholder="Label"
           className="form-control"
           onChange={({ target }) => {
@@ -35,6 +37,7 @@ const TimerTime = () => {
         <div className="d-flex align-items-center gap-3">
           <select
             className="form-select"
+            value={record.project.title}
             name="project"
             onChange={({ target }) => {
               recordHandler(target.name, target.value);

@@ -53,7 +53,6 @@ const EditProjectModal: React.FC<ModalProps<ProjectData>> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData) {
-      console.log(formData);
       const newRecords = updateLocaleStorageProjects(formData);
       setData(newRecords);
       onClose();

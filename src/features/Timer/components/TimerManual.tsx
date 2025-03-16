@@ -2,7 +2,7 @@ import { useGetProjects } from "../../../api/queries/projectQuery";
 import { useTimeTracking } from "../hooks/useTimeTracking";
 
 const TimerManual = () => {
-  const { recordHandler, addTimeEntry } = useTimeTracking();
+  const { recordHandler, addTimeEntry, record } = useTimeTracking();
   const { data: projects } = useGetProjects();
   return (
     <div className="card container border-0 shadow-lg">
@@ -11,6 +11,7 @@ const TimerManual = () => {
           style={{ width: "300px" }}
           type="text"
           name="description"
+          value={record.description}
           placeholder="Label"
           className="form-control"
           onChange={({ target }) => {
@@ -21,6 +22,7 @@ const TimerManual = () => {
           <select
             className="form-select"
             name="project"
+            value={record.project.title}
             onChange={({ target }) => {
               recordHandler(target.name, target.value);
             }}
@@ -36,6 +38,7 @@ const TimerManual = () => {
             <div>
               <input
                 name="startTime"
+                value={record.startTime}
                 type="datetime-local"
                 step={1}
                 className="form-control m-0"
@@ -47,6 +50,7 @@ const TimerManual = () => {
             <div>
               <input
                 name="endTime"
+                value={record.endTime}
                 type="datetime-local"
                 step={1}
                 className="form-control m-0"

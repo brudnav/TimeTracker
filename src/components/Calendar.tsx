@@ -12,8 +12,16 @@ import { getLocalDateTime, getLocalStringFormat } from "../utils/Time";
 import { convertTimeRecordsToCalendarEvents } from "../utils/Calendar";
 import { useTimeRecordContext } from "../contexts/TimeRecordContext";
 
+enum EnumCalendarModes {
+  MONTH = "dayGridMonth",
+  WEEK = "timeGridWeek",
+  DAY = "timeGridDay",
+}
+
 const Calendar = () => {
-  const [currentView, setCurrentView] = useState("dayGridMonth");
+  const [currentView, setCurrentView] = useState<EnumCalendarModes>(
+    EnumCalendarModes.MONTH
+  );
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<TimeRecord | null>(null);
   const slotDurations = [
@@ -30,8 +38,6 @@ const Calendar = () => {
   const events = convertTimeRecordsToCalendarEvents(records);
 
   const handleEditClick = (info: EventClickArg) => {
-    console.log(info);
-
     const timeRecordObject: TimeRecord = {
       id: info.event._def.publicId,
       description: info.event._def.title,
@@ -56,22 +62,32 @@ const Calendar = () => {
             background: "#f5f5f5",
           }}
         >
-          <input
-            type="range"
-            min="0"
-            max={slotDurations.length - 1}
-            step="1"
-            value={slotIndex}
-            onChange={(e) => setSlotIndex(Number(e.target.value))}
-          />
+          <div
+            style={{
+              visibility:
+                currentView === EnumCalendarModes.MONTH ? "hidden" : "visible",
+            }}
+            className="d-flex align-items-center gap-2"
+          >
+            <input
+              type="range"
+              min="0"
+              max={slotDurations.length - 1}
+              step="1"
+              value={slotIndex}
+              onChange={(e) => setSlotIndex(Number(e.target.value))}
+            />
+            <span>{`${slotDurations[slotIndex]}`}</span>
+          </div>
+
           <div>
-            <button onClick={() => setCurrentView("dayGridMonth")}>
+            <button onClick={() => setCurrentView(EnumCalendarModes.MONTH)}>
               📅 Months
             </button>
-            <button onClick={() => setCurrentView("timeGridWeek")}>
+            <button onClick={() => setCurrentView(EnumCalendarModes.WEEK)}>
               🗓️ Weeks
             </button>
-            <button onClick={() => setCurrentView("timeGridDay")}>
+            <button onClick={() => setCurrentView(EnumCalendarModes.DAY)}>
               📆 Days
             </button>
           </div>
@@ -93,7 +109,6 @@ const Calendar = () => {
             hour12: false,
           }}
           eventContent={(info) => {
-            console.log(info);
             const infoTitle = `${
               info.event._def.extendedProps.project.title || "Nezařazený"
             } - ${info.event.title || "Bez popisu"}`;

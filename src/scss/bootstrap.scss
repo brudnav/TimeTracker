@@ -4,3 +4,11 @@ $primary: crimson;
 p {
   margin: 0;
 }
+.nav-link.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.nav-link {
+  cursor: pointer;
+}

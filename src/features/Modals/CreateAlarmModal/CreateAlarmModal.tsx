@@ -66,8 +66,6 @@ const CreateAlarmModal: React.FC<ModalProps<AlarmData>> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData) {
-      console.log(formData);
-
       setData({
         isAlarmSet: formData.alarmTime ? true : false,
         alarmTime: formData.alarmTime,
